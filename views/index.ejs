@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello</title>
+
+    <style>
+        /* Optional: Add some basic styling */
+        .array-item {
+            cursor: pointer;
+            padding: 5px 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            display: inline-block;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>File upload</h1>
+    <form action="/sendfile" enctype="multipart/form-data" method="post">
+            <label for="myfile"
+                >Select a file:</label
+            >
+            <input
+                type="file"
+                id="myfile"
+                name="myfile"
+            />
+            <br /><br />
+            <input type="submit" />
+        </form>
+
+
+        <h1>Audio Input Example</h1>
+
+        <form action="/uploadaudio" enctype="multipart/form-data" method="post">
+            <input type="file" id="audioInput" name="audioOne">
+            
+            <br /><br />
+            <input type="submit" />
+        </form>
+
+
+        <button id="clickbtn"> CLick me</button>
+
+
+        <audio id="player" controls="controls">
+            <source id="audsrc" src="./samay.m4a" type="audio/mp4">
+        </audio>
+
+
+        <h1>Array Content</h1>
+        <div id="arrayContentList"></div>
+        <div id="player"></div>
+
+        <button id="uploadbtn">Upload File</button>
+
+        
+    
+</body>
+<script>
+    const uploadbtn = document.getElementById('uploadbtn')
+    uploadbtn.addEventListener('click',()=>{
+        window.location.href="/upload.ejs"
+    })
+    const btn=document.getElementById('clickbtn').addEventListener('click',()=>{
+        fetch('/getfiles')
+        .then(response => response.json())
+        .then(content => {
+            const contentList = document.getElementById('arrayContentList');
+            contentList.innerHTML = ''; // Clear the list before adding new items
+            content.forEach(item => {
+                const listItem = document.createElement('div');
+                listItem.classList.add('array-item')
+                listItem.textContent = item;
+                contentList.appendChild(listItem);
+                listItem.addEventListener('click',()=>{
+                    console.log("hello click",item);
+                    const player =document.getElementById("player")
+                    const audsource = document.getElementById("audsrc")
+                    
+                    audsource.setAttribute("src","/music/"+item)
+                    player.load()
+                })
+                // listItem.onclick()
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching array content:', error);
+        });
+    })
+
+
+</script>
+</html>
