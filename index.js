@@ -89,7 +89,7 @@ app.use(cookieParser())
 
 app.set("view engine","ejs")
 app.set("views",path.resolve("./views"))
-
+app.use('/temp', express.static(path.join(process.cwd(), 'temp')));
 db()
 
 
@@ -158,10 +158,20 @@ app.post('/sendfile',upload.single('myfile'),(req,res)=>{
 // })
 
 
+app.get('/audioplay',(req,res)=>{
+
+    return res.render('audioplay')
+})
+
 app.get('/music/:name',(req,res)=>{
-    const file = fs.createReadStream(`./temp/${req.params.name}/output_64k/index.m3u8`)
-    res.setHeader('Content-Type','audio/mpeg')
-    file.pipe(res)
+    // const file = fs.createReadStream(`./temp/${req.params.name}/output_64k/index.m3u8`)
+    const audUrl = `/temp/${req.params.name}/output_64k/index.m3u8`
+
+    res.setHeader('Content-Type','application/vnd.apple.mpegurl')
+    return res.json({
+        url:audUrl
+    })
+    
 })
 
 

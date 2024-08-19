@@ -63,6 +63,7 @@
         
     
 </body>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
     const uploadbtn = document.getElementById('uploadbtn')
     uploadbtn.addEventListener('click',()=>{
@@ -83,9 +84,12 @@
                     console.log("hello click",item);
                     const player =document.getElementById("player")
                     const audsource = document.getElementById("audsrc")
-                    
-                    audsource.setAttribute("src","/music/"+item)
-                    player.load()
+                    fetch(`/music/${item}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const audioUrl = data.url;
+                        playAudio(audioUrl);
+                    });
                 })
                 // listItem.onclick()
             });
@@ -94,7 +98,19 @@
             console.error('Error fetching array content:', error);
         });
     })
+    function playAudio(url) {
+        const audio = document.getElementById('player');
+        const hls = new Hls();
+        // const baseUrl=`http://localhost:4000/temp/${url}/output_64k/index.m3u8`
+        hls.loadSource(url);
+        hls.attachMedia(audio);
 
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+            audio.play();
+        });
+    }
 
 </script>
+
+
 </html>
