@@ -50,7 +50,7 @@
 
 
         <audio id="player" controls="controls">
-            <source id="audsrc" src="./samay.m4a" type="audio/mp4">
+            <source id="audsrc" src="./samay.m4a" type="application/x-mpegURL">
         </audio>
 
 
@@ -101,6 +101,7 @@
     function playAudio(url) {
         const audio = document.getElementById('player');
         const hls = new Hls();
+        url='https://s3.ap-south-1.amazonaws.com/audiofile.musify/8e6861e3-b307-4dbc-8bad-33ff1c42aa82/output_64k/index.m3u8'
         // const baseUrl=`http://localhost:4000/temp/${url}/output_64k/index.m3u8`
         hls.loadSource(url);
         hls.attachMedia(audio);

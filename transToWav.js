@@ -24,7 +24,7 @@ function transwav(inputfile , outputDir){
             console.log(inputAud);
             resolve()
             // const tempfile = fs.readdirSync(`./wavaudio/`)
-            // console.log(tempfile);
+            // console.log(temexpfile);
         })
         .on('error',(error)=>{
             console.log("Error is:-",error);
